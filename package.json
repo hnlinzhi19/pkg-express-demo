@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "ejs": "^2.5.7",
+    "express": "^4.15.4",
+    "globby": "^6.1.0",
+    "opn": "^5.1.0"
+  },
+  "scripts": {
+    "pkg": "npx pkg index.js -c package.json -o packed/photo"
+  },
+  "bin": "index.js",
+  "pkg": {
+    "assets": [
+      "views/**/*"
+    ],
+    "targets": [
+      "node7-macos-x64",
+      "node7-win-x64"
+    ]
+  }
+}

@@ -1,0 +1,86 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="lib/sakura.css" type="text/css">
+    <title>
+        <%= title %>
+    </title>
+    <!--[if lt IE 9]>
+    <script src="lib/html5shiv.min.js"></script>
+    <script src="lib/es5-shim.min.js"></script>
+    <script src="lib/es5-shame.min.js"></script>
+    <script src="lib/json3.min.js"></script>
+    <script src="lib/html5media.min.js"></script>
+    <![endif]-->
+    <script src="lib/jquery.js"></script>
+    <script src="lib/slide.js"></script>
+</head>
+
+<body>
+    <div class="rslides_container">
+        <ul class="rslides" id="slider1">
+            <% for(var i=0; i<list.length; i++) {%>
+                <li>
+                    <% if (list[i].isMp4) { %>
+                        <video src="<%= list[i].img %>" 
+                        <% if (list[i].isAvi) {%> loop <% } %> 
+                        controls="controls">
+                            您的浏览器不支持 video 标签。
+                        </video>
+                    <% } else { %>
+                        <img src="<%= list[i].img %>" alt="">
+                    <% } %>
+                </li>
+            <% } %>
+        </ul>
+    </div>
+    <div style="display:none;">
+        <% for(var i=0; i<mp3List.length; i++) {%>
+            <audio id="js-v-<%= mp3List[i].id %>" src="<%= mp3List[i].mp3 %>">
+                您的浏览器不支持 audio 标签。
+            </audio>
+            <% } %>
+    </div>
+    <script>
+        // You can also use "$(window).load(function() {"
+        $(function () {
+            var oldIndex = 0;
+            if ($('#js-v-1').length) {
+                $('#js-v-1').get(0).play();
+            }
+            // Slideshow 1
+            $("#slider1").responsiveSlides({
+                auto: false,
+                pager: true,
+                nav: true,
+                speed: 500,
+                maxwidth: 1280,
+                namespace: "centered-btns",
+                after: function () {
+                    var index = $('.centered-btns_here').index() + 1;
+                    if ($('#js-v-' + index).length) {
+                        $('#js-v-' + index).get(0).play();
+                    }
+                    var video = $('#slider1 ').find('li').eq(index -1).find('video');
+                    if (video.length) {
+                        video.get(0).play();
+                    }
+                },
+                before: function (xindex) {
+                    var index = $('.centered-btns_here').index() + 1;
+                    if ($('#js-v-' + index).length) {
+                        $('#js-v-' + index).get(0).pause();
+                    }
+                    //    console.log(arguments);
+                    var video = $('#slider1 ').find('li').eq(oldIndex).find('video');
+                    if (video.length) {
+                        video.get(0).pause();
+                    }
+                    oldIndex = xindex;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
